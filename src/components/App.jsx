@@ -18,6 +18,22 @@ class App extends Component {
 		filter: '',
 	};
 
+	componentDidMount() {
+		const contacts = JSON.parse(window.localStorage.getItem('contacts'));
+		if (contacts) {
+			this.setState({ contacts });
+		}
+	}
+
+	componentDidUpdate(_, prevState) {
+		if (prevState.contacts.length !== this.state.contacts.length) {
+			window.localStorage.setItem(
+				'contacts',
+				JSON.stringify(this.state.contacts)
+			);
+		}
+	}
+
 	handleFormSubmit = ({ name, number }) => {
 		this.setState(prevState => ({
 			contacts: [...prevState.contacts, { id: nanoid(), name, number }],
